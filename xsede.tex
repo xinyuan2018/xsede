@@ -1,0 +1,88 @@
+\documentclass[11pt]{article}
+\usepackage{epsfig}
+\usepackage{cite}
+\usepackage{pst-gantt}
+%\usepackage{psfig}
+%\usepackage{setspace}
+%\usepackage{subfigure}
+%\usepackage{subfigureh}
+\usepackage{times}
+\usepackage{subcaption}
+\usepackage{latexsym}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage[figure,linesnumbered]{algorithm2e}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{algcompatible}
+%\usepackage{algpseudocode}
+%\usepackage[all=normal,subtle,tracking=normal]{savetrees}
+%\usepackage[figure,linesnumbered]{algorithm2e}
+%\usepackage{nsf}
+\usepackage{url}
+
+% Define some handy shortcuts.
+\let\defn=\emph                   % Definition of a term
+\newcommand{\algo}[1]{%           % Name of an algorithm
+  \ensuremath{\mathit{#1}}%
+}
+\newcommand{\SUB}{%               % Sub-fat-tree
+  \ensuremath{\mathit{SUB}}%
+}
+
+
+\setlength{\textheight}{8.8in}
+\setlength{\columnsep}{2.0pc}
+\setlength{\textwidth}{6.5in}
+%\setlength{\footheight}{0.0in}
+\setlength{\topmargin}{0.0in}
+\setlength{\headheight}{0.0in}
+\setlength{\headsep}{0.0in}
+\setlength{\oddsidemargin}{-.05in}
+\setlength{\evensidemargin}{-.05in}
+\setlength{\parindent}{1.0pc}
+%\setlength{\parskip}{0.06in}
+
+
+
+%\documentclass[11pt]{article}
+%\usepackage{fullpage}
+%\usepackage{times}
+%\usepackage{xspace}
+%\usepackage{epsfig}
+%\usepackage{wrapfig}
+%\usepackage{subfigure}
+%\usepackage{url}
+%\usepackage{color}
+%\usepackage{titlesec}
+%\usepackage{graphics}
+%\renewcommand\url{\begingroup\urlstyle{sf}\Url} % put url font in sf
+%
+
+\author{
+}
+
+\date{}
+
+\begin{document}
+\sloppy
+\thispagestyle{empty}
+\addtolength{\baselineskip}{-1pt}
+
+%\input summary
+
+\setcounter{page}{1}
+\pagestyle{plain}
+\input intro
+\newpage
+
+\setcounter{page}{1}
+%\bibliographystyle{abbrv}
+\bibliographystyle{unsrt}
+\bibliography{./xinbib.bib,./interconnect.bib,./scheduling.bib,./dkl.bib}
+
+\end{document}
