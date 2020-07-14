@@ -1,9 +1,72 @@
-\centerline{\Large\bfseries CryptMPI: A}
+\centerline{\Large\bfseries CryptMPI: A Fast Encrypted MPI Library}
 
 \section{Scientific Background}
+High performance computing (HPC) applications that process %highly-
+sensitive data, such as medical, financial, and engineering documents have
+to meet stringent security requirements. In order for such applications to execute in
+the public cloud environment, it is imperative that the cloud infrastructure
+supports both privacy and integrity. Many HPC applications utilize the Message
+Passing Interface (MPI) library, the de facto library for message
+passing applications. For MPI applications to run with security
+guarantees in the public cloud environment, mechanisms must be
+incorporated to support privacy and integrity in MPI communication.
 
+Existing efforts to retrofit MPI libraries with encryption, however,
+have introduced severe security flaws. For example,
+ES-MPICH2~\cite{Ruan:2012:EMP:2197079.2197242}, the first such MPI library,
+uses the weak ECB (Electronic Codebook) mode of operation that has known
+vulnerabilities~\cite[page 89]{Book:KL14}.
+In addition, no existing encrypted MPI libraries provide meaningful data
+integrity, meaning that data could potentially be modified without being
+detected. Consequently, it is urgent to revisit the problem by applying
+the state-of-the-art theory and practice to properly
+encrypt MPI communications.
 
-\section{Research Objectives and Approaches}
+In recent years, significant efforts have been put to improve the security,
+usability, and performance of cryptographic libraries.
+Popular cryptographic libraries, including OpenSSL~\cite{openssl},
+BoringSSL~\cite{boringssl},
+Libsodium~\cite{libsodium} and CryptoPP~\cite{cryptopp}, all received intensive
+security review,
+and some (OpenSSL and CryptoPP) even passed the Federal Information Processing
+Standards  (FIPS) 140-2 validation. In addition, recent processors from
+all major CPU vendors have introduced hardware support to speed up
+the computationally intensive
+cryptographic operations (e.g., Intel AES-NI instructions to accelerate the AES
+algorithm, or the x86 CLMUL instruction set to improve the speed of finite-field
+multiplications). All of these cryptographic libraries
+now support hardware-accelerated cryptographic operations.
+
+The advances in the networking infrastructure in data centers have
+shifted the communication bottleneck from the network links to the network
+end-points. As such, when incorporating security mechanisms in
+the MPI library, the additional computation in the cryptographic operations
+likely will introduce significant overheads to MPI communications,  %operations,
+detrimental to the performance. To achieve high-performance and
+secure MPI communication, it is thus critical to develop novel schemes to optimize
+the MPI performance with encryption. 
+
+In this research, we will develop CryptMPI, a high-performance secure MPI library.
+CryptMPI uses AES GCM as well as the less expensive counter mode encryption technique
+to support MPI communication with integrity and privacy.
+CryptMPI will be built over MPICH (MPICH-3.2.1) and MVAPICH2 (MVAPICH2-2.3.2)
+by incorporating the state-of-the-art encryption library BoringSSL and is intended
+to be used by the broad community with MPI applications that require integrity
+and privacy.
+
+In our preliminary development, we have investigated various techniques to support
+secure MPI communication. These include using IPSec, naively incorporating the
+encryption into the MPI library \cite{Cluster:Naser19}, and developing more
+advanced techniques such as pipelining and multithreading for secure
+point-to-point communication and new collective algorithms for collective operations
+with encryption. Like the development of other software libraries, implementation and
+experimentation are essential for the new secure MPI library to be
+practical and efficient. Xsede resources are critical in the performance
+evaluation and tuning of CryptMPI and for ensuring that CryptMPI achieves high performance
+in practice. Our ongoing work on this subject is supported by the NSF grant
+CICI-1738912 and CRI-1822737.
+
+\section{Research Objectives}
 
 \section{Resource Usage Plan to achieve the research objectives}
 
