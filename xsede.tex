@@ -1,9 +1,43 @@
 \documentclass[11pt]{article}
+
+\usepackage{epsfig}
+\usepackage{cite}
+%\usepackage{psfig}
+%\usepackage{setspace}
+%\usepackage{subfigure}
+%\usepackage{subfigureh}
+\usepackage{latexsym}
+\usepackage{graphics}
+%\usepackage{subfigure}
+\usepackage{wrapfig}
+\usepackage{amsmath,amsfonts,url}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{caption}
+%\usepackage{subcaption}
+\usepackage[linesnumbered]{algorithm2e}
+%\usepackage[all=normal,subtle,tracking=normal]{savetrees}
+\usepackage{color}
+\usepackage{bm}
+\usepackage{setspace}
+\usepackage{xspace}
+\usepackage{amsthm}
+
+\usepackage{subfig}
+
+\usepackage{tabularx,ragged2e,booktabs,caption}
+
+\usepackage[linesnumbered]{algorithm2e}
+\SetAlCapSkip{1em}
+
+
+\iffalse
 \usepackage{epsfig}
 \usepackage{cite}
 \usepackage{pst-gantt}
 %\usepackage{psfig}
-%\usepackage{setspace}
+\usepackage{setspace}
 %\usepackage{subfigure}
 %\usepackage{subfigureh}
 \usepackage{times}
@@ -12,7 +46,7 @@
 \usepackage{graphics}
 \usepackage{graphicx}
 \usepackage{wrapfig}
-\usepackage{amsmath}
+\usepackage{amsmath,amsfonts}
 \usepackage{tabularx}
 \usepackage{comment}
 \usepackage[figure,linesnumbered]{algorithm2e}
@@ -24,6 +58,382 @@
 %\usepackage[figure,linesnumbered]{algorithm2e}
 %\usepackage{nsf}
 \usepackage{url}
+\usepackage{bm}
+\usepackage{xspace}
+\usepackage{amsthm}
+\usepackage{tabularx,ragged2e,booktabs,caption}
+
+\fi
+
+\SetKw{Parallel}{parallel}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\TODO}[1]{\textcolor{red}{TODO #1}\PackageWarning{TODO: }{#1}}
+
+
+\newcommand{\gamesfontsize}{\small}
+
+\def\bits{\{0,1\}}
+\newcommand{\xor}{{\oplus}}
+\newcommand{\N}{{{\mathbb N}}	}
+
+\newcommand{\mysubsubsection}[1]{\vspace{-5pt}\subsubsection{#1.}}
+\newcommand{\headingb}[1]{\vspace{-5pt}\subsubsection{#1.}}
+\newcommand{\heading}[1]{\vspace{5pt}\noindent\underline{\textsc{#1}}}
+% \textsc{#1}}
+\newcommand{\headingu}[1]{\underline{\textsf{#1}}}
+\newcommand{\noskipheading}[1]{\noindent\underline{\textsc{#1}}}
+\newcommand{\noskipheadingu}[1]{\noindent\underline{\textsc{#1}}}
+\newcommand{\headingg}[1]{\noindent\underline{\textsc{#1}}}
+
+
+\newcommand{\twoColsNoDivide}[4]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{c@{\hspace*{.4em}}c@{\hspace*{.4em}}c}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #3 \end{minipage}
+        &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #4 \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+
+\newcommand{\twoCols}[4]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{c@{\hspace*{.4em}}|c@{\hspace*{.4em}}c}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #3 \end{minipage}
+        &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #4 \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+\newcommand{\oneCol}[2]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{c@{\hspace*{.4em}}}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #2 \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+\newcommand{\twoColsTwoRows}[6]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{c@{\hspace*{.4em}}|c@{\hspace*{.4em}}c}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #3 \end{minipage}
+        &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #4 \end{minipage}
+        \\ \hline
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #5
+        \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #6        
+        \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+\newcommand{\threeCols}[6]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{@{\hspace{-0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #4
+        \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #5
+        \end{minipage} &
+        \begin{minipage}[t]{#3\textwidth}\setstretch{1.05}\gamesfontsize #6
+        \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+\newcommand{\threeColstwoSplit}[6]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{@{\hspace{-0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}@{\hspace{0.2em}}c@{\hspace{0.2em}}}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #4
+        \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #5
+        \end{minipage} &
+        \begin{minipage}[t]{#3\textwidth}\setstretch{1.05}\gamesfontsize #6
+        \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+\newcommand{\fourColstwoSplit}[8]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{@{\hspace{-0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}@{\hspace{0.2em}}c@{\hspace{0.2em}}@{\hspace{0.2em}}c@{\hspace{0.2em}}}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #5
+        \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #6
+        \end{minipage} &
+        \begin{minipage}[t]{#3\textwidth}\setstretch{1.05}\gamesfontsize #7
+        \end{minipage}  &
+        \begin{minipage}[t]{#4\textwidth}\setstretch{1.05}\gamesfontsize #8
+        \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+
+\newcommand{\threeColsSplit}[6]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{@{\hspace{-0.2em}}c@{\hspace{0.2em}}||@{\hspace{0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #4
+        \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #5
+        \end{minipage} &
+        \begin{minipage}[t]{#3\textwidth}\setstretch{1.05}\gamesfontsize #6
+        \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+
+\newcommand{\fourCols}[8]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{@{\hspace{-0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}|@{\hspace{0.2em}}c@{\hspace{0.2em}}}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #5
+        \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #6
+        \end{minipage} &
+        \begin{minipage}[t]{#3\textwidth}\setstretch{1.05}\gamesfontsize #7
+        \end{minipage}&
+        \begin{minipage}[t]{#4\textwidth}\setstretch{1.05}\gamesfontsize #8
+        \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+
+\newcommand{\threeColsTwoRows}[9]{
+\begin{center}
+        \framebox{
+        \begin{tabular}{c@{\hspace*{.4em}}|c@{\hspace*{.4em}}|c@{\hspace*{.4em}}}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #4
+        \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #5
+        \end{minipage} &
+        \begin{minipage}[t]{#3\textwidth}\setstretch{1.05}\gamesfontsize #6
+        \end{minipage}\\\hline 
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize
+         #7 \end{minipage} &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize
+         #8 \end{minipage} &
+        \begin{minipage}[t]{#3\textwidth}\setstretch{1.05}\gamesfontsize
+         #9
+        \end{minipage}
+        \end{tabular}
+        }
+\end{center}
+}
+
+\newcommand{\threeColsNoBox}[3]{
+\begin{center}\begin{tabular}{c|c|c}
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#1
+\end{tabbing}\end{minipage} &
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#2
+\end{tabbing}\end{minipage} &
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#3
+\end{tabbing}\end{minipage} 
+\end{tabular}\end{center}}
+
+\newcommand{\fourColsNoBox}[4]{
+\begin{center}\begin{tabular}{c|c|c|c}
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#1
+\end{tabbing}\end{minipage} &
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#2
+\end{tabbing}\end{minipage} &
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#3
+\end{tabbing}\end{minipage} &
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#4
+\end{tabbing}\end{minipage} 
+\end{tabular}\end{center}}
+
+
+\newcommand{\twoColsNoBox}[4]{
+\begin{center}
+        \begin{tabular}{c@{\hspace*{.4em}}|c@{\hspace*{.4em}}c}
+        \begin{minipage}[t]{#1\textwidth}\setstretch{1.05}\gamesfontsize #3 \end{minipage}
+        &
+        \begin{minipage}[t]{#2\textwidth}\setstretch{1.05}\gamesfontsize #4 \end{minipage}
+        \end{tabular}
+\end{center}
+}
+
+
+
+\newcommand{\twoColsNoBoxNoDivide}[2]{
+\begin{center}\begin{tabular}{ccc}
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#1
+\end{tabbing}\end{minipage} & \hspace{10pt} &
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#2
+\end{tabbing}\end{minipage} 
+\end{tabular}\end{center}}
+
+
+\newcommand{\threeColsNoBoxOneDivide}[3]{
+\begin{center}\begin{tabular}{ccc|c}
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#1
+\end{tabbing}\end{minipage} & \hspace{10pt} &
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#2
+\end{tabbing}\end{minipage} & 
+\begin{minipage}[t]{1in}\begin{tabbing}
+12\=12\=12\=\kill
+#2
+\end{tabbing}\end{minipage}
+\end{tabular}\end{center}}
+
+
+
+\newcommand{\oneColNoBox}[1]{
+\begin{center}\begin{tabular}{c}
+\begin{minipage}[t]{1in}\begin{tabbing}
+123\=123\=123\=\kill
+#1
+\end{tabbing}\end{minipage} 
+\end{tabular}\end{center}}
+
+\newcommand{\Keys}{\mathrm{Keys}}
+\newcommand{\Dom}{\mathrm{Dom}}
+
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\apref}[1]{Appendix~\ref{#1}}
+\newcommand{\thref}[1]{Theorem~\ref{#1}}
+\newcommand{\sthref}[1]{Th.~\ref{#1}}
+\newcommand{\defref}[1]{Definition~\ref{#1}}
+\newcommand{\corref}[1]{Corollary~\ref{#1}}
+\newcommand{\scorref}[1]{Cor.~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\clref}[1]{Claim~\ref{#1}}
+\newcommand{\propref}[1]{Proposition~\ref{#1}}
+\newcommand{\factref}[1]{Fact~\ref{#1}}
+\newcommand{\remref}[1]{Remark~\ref{#1}}
+\newcommand{\obsref}[1]{Observation~\ref{#1}}
+\newcommand{\figref}[1]{\textmd{Fig.}~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\consfigref}[1]{Construction~\ref{#1}}
+\renewcommand{\eqref}[1]{\mbox{Eq.~(\ref{#1})}}
+\newcommand{\IV}{\mathrm{IV}}
+\newcommand{\concat}{{\,\|\,}}
+
+\newcommand{\getsr}{{\:{\leftarrow{\hspace*{-3pt}\raisebox{.75pt}{$\scriptscriptstyle\$$}}}\:}}
+\newcommand{\vecM}{\bm{M}}
+\newcommand{\Procedure}{\textbf{procedure }}
+%\newcommand{\Enc}{\mathsf{Enc}}
+
+
+\newcommand{\commentt}[1]{\small {// #1}}
+\newcommand{\FOR}{\textbf{for }}
+\newcommand{\TO}{\textbf{to }}
+\newcommand{\DO}{\textbf{do }}
+\def\next{\:;\:}
+\newcommand{\ind}{\hspace*{10pt}}
+\newcommand{\flag}{\textsl{last}}
+\newcommand{\IF}{\textbf{if }}
+\newcommand{\ELSE}{\textbf{else }}
+\newcommand{\THEN}{\textbf{then }}
+\newcommand{\GCMEnc}{\mathsf{GCM}.\mathsf{Enc}}
+\newcommand{\RETURN}{\textbf{return}}
+\newcommand{\Header}{\textsl{Header}}
+\newcommand*{\sys}{{\sffamily CryptMPI}\xspace}
+\newcommand{\sysrm}{\textrm{CryptMPI}}
+\newcommand{\FastCTR}{\textrm{FastCTR}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+
+\newcommand{\Enc}{\texttt{Enc}}
+\newcommand{\Dec}{\texttt{Dec}}
+\newcommand{\Gen}{\texttt{Gen}}
+\newcommand{\calM}{{\mathcal M}}
+
+
+
+\newcommand{\Tcomm}{T_{\mathrm{comm}}}
+\newcommand{\acomm}{\alpha_{\mathrm{comm}}}
+\newcommand{\bcomm}{\beta_{\mathrm{comm}}}
+\newcommand{\Ted}{T_{\mathrm{enc}}}
+\newcommand{\aed}{\alpha_{\mathrm{enc}}}
+\newcommand{\bed}{\beta_{\mathrm{enc}}}
+\newcommand{\Tall}{T_{\mathrm{ecom}}}
+\newcommand{\aall}{\alpha_{\mathrm{ecom}}}
+\newcommand{\ball}{\beta_{\mathrm{ecom}}}
+\newcommand{\Red}{R_{\mathrm{enc}}}
+\newcommand{\Rcomm}{R_{\mathrm{comm}}}
+\newcommand{\Acomm}{A_{\mathrm{comm}}}
+\newcommand{\Bcomm}{B_{\mathrm{comm}}}
+\newcommand{\vecC}{\boldsymbol{C}}
+\newcommand{\AES}{\mathrm{AES}}
+
+
+\newcommand{\IRecv}{\texttt{MPI\_IRecv} }
+\newcommand{\Recv}{\texttt{MPI\_Recv} }
+\newcommand{\ISend}{\texttt{MPI\_ISend} }
+\newcommand{\Send}{\texttt{MPI\_Send} }
+
+\newcommand{\Wait}{\texttt{MPI\_Wait} }
+\newcommand{\Waitall}{\texttt{MPI\_Waitall} }
+\newcommand{\EncAlltoall}{\texttt{Encrypted\_Alltoall} }
+\newcommand{\EncAllgather}{\texttt{Encrypted\_Allgather} }
+\newcommand{\EncAlltoallv}{\texttt{Encrypted\_Alltoallv} }
+\newcommand{\EncIRecv}{\texttt{Encrypted\_IRecv} }
+\newcommand{\EncBcast}{\texttt{Encrypted\_Bcast} }
+\newcommand{\Init}{\texttt{MPI\_Init}}
+\newcommand{\pk}{{pk}}
+\newcommand{\sk}{{sk}}
+\newcommand{\Gather}{\texttt{MPI\_Gather}}
+\newcommand{\Scatter}{\texttt{MPI\_Scatter}}
+\newcommand{\calK}{\mathcal{K}}
+%\newcommand{\Dom}{\mathrm{Dom}}
+%\newcommand{\Keys}{\mathrm{Keys}}
+
+\newcommand{\Unencrypted}{{\emph{Unencrypted}}}
+\newcommand{\Naive}{{\emph{Naive}}}
+
+
+
+
+
+
 
 % Define some handy shortcuts.
 \let\defn=\emph                   % Definition of a term
@@ -83,6 +493,6 @@
 \setcounter{page}{1}
 %\bibliographystyle{abbrv}
 \bibliographystyle{unsrt}
-\bibliography{./xinbib.bib,./interconnect.bib,./scheduling.bib,./dkl.bib}
+\bibliography{./crypt.bib,dkl.bib}
 
 \end{document}
