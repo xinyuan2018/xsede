@@ -1,24 +1,25 @@
 \centerline{\Large\bfseries Code Performance \& Resource Costs}
 
-Since our software is an MPI library, its performance does not decide the resource needs.
-Instead, the application or benchmark programs used in our evaluation will decide the resource
-requirement. The nature of the research requires us to run different benchmarks and in different
+Since our software is an MPI library, its performance does not decide the resource requirement.
+Instead, the application and benchmark programs used in the evaluation will decide the resource
+needs. Moreover, the nature of the research requires us to run different benchmarks and in different
 system configurations such as different numbers of ranks per node and different numbers of total
 ranks. Additional, we sometimes needs to leave some cores in each node unuse (by the MPI) to
-properly evaluate the performance. All of these making the estimation of the resources required
-very challenging.
+properly evaluate the performance. All of these making the estimation of the required
+resources challenging.
 
 The XSEDE resources will mainly be used in medium (500-1000 cores) and large
 (1000+ cores) runs. We have used a startup allocation of 50,000 SUs (TG-ECS190004) to perform
 preliminary evaluation of CryptMPI using micro-benchmarks, and
 NAS parallel benchmarks (Class D on 784-ranks on 112-nodes). In this project period, we plan to
 run NAS parallel benchmarks, Class E on a larger number of nodes as well as MPI applications
-and benchmarks such as CORAL benchmark codes would take longer time. 
+and benchmarks such as CORAL benchmark codes would take more computing hours. 
 
 In the following, we will report performance results with ping-pong, OSU benchmarks, stencil
 benchmarks, and NAS parallel benchmarks that we obtained on
-PSC Bridges (regular memory), which compare three MPI libraries: the traditional unencrypted
-MPI ($Unencrypted$), a naive implementation ($Naive$), and CryptMPI. 
+PSC Bridges (regular memory). The results compare the performance of
+three MPI libraries: the traditional unencrypted
+MPI ($Unencrypted$), a naive implementation ($Naive$), and $CryptMPI$. 
 
 \noskipheading{Ping Pong.}
 The ping-pong results on Bridges are shown in \figref{fig:xsede_pingpong}. Because of
