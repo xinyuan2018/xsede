@@ -1,4 +1,4 @@
-\centerline{\Large\bfseries CryptMPI: A Fast Encrypted MPI Library}
+\centerline{\Large\bfseries Data Insurance in the Cluster Environment}
 
 \section{Scientific Background}
 High performance computing (HPC) applications that process %highly-
@@ -76,7 +76,7 @@ Omnipath. Since the encryption/decryption operations are expensive operations,
 incorporating security mechanisms in the MPI library can introduce significant
 overheads. To achieve our objective, we will investigate and experiment with various
 enabling technology, develop, implement, and evaluate novel techniques for efficient
-point-to-point and collective communication schemes (with encryption). Large-scale
+point-to-point and collective communications with encryption. Large-scale
 benchmarking runs with different system configurations and different benchmarks
 are essential in this research. CryptMPI is currently under development with new
 techniques being added to the system. In the following, we will describe
@@ -103,7 +103,7 @@ maximize the ping-pong performance for each communication.
 Empirical results confirm that these are also good choices in
 other settings.
 
-Below, we will first describe our threat model,
+In the following, we will first describe our threat model,
 and then discuss the details of the optimization techniques.
 For the convenience of discussion,
 we will adopt the following notation.
@@ -235,23 +235,19 @@ Since there are ${q \choose 2} \leq q^2 /2$ pairs of seeds,
 by the Union Bound, the chance that there is some seed collision is at most $q^2 / 2^{129}$.
 \end{proof}
 
-\noskipheading{Multi-threading encryption/decryption.} As shown
-in \figref{fig:motivate},
-there is a huge gap between single-core encryption speed and %high-speed
-MPI bandwidth.
-Data in \figref{fig:motivate} are for a 40Gbps interconnect;
-the situation is much worse for current generation HPC systems with 100Gbps interconnects.
-On the other hand, modern machines may have many cores that MPI applications
-do not fully utilize. A natural way to fill the gap is to
+\noskipheading{Multi-threading encryption/decryption.} 
+In the contemporary HPC systems with 100Gbps interconnects, there is a large gap
+between single-core encryption speed and the network bandwidth.
+At the same time, modern machines may have more cores than an MPI application can
+utilize. A natural way to fill the gap is to
 chop a message into $t$ segments,
 and use $t$ threads to encrypt them simultaneously via Algorithm~\ref{algo:chop},
-where $t$ is a parameter.
-%The number of threads, $t$, is a parameter.
-The header will be computed and sent first.
+where $t$ is a parameter. For this to work, a header will be computed and sent first.
 Then, each thread $i$ will compute the corresponding ciphertext segment~$C_i$,
 and the entire $(C_1, \ldots, C_t)$ will be sent as a whole.
 
-\heading{Putting things together: $(k, t)$-chopping algorithm.}  To combine pipelining and multi-thre
+\heading{Combining pipelining and multithreading:
+$(k, t)$-chopping algorithm.}  To combine pipelining and multi-thre
 ading,
 we chop a message into $kt$ segments and encrypt them via Algorithm~\ref{algo:chop},
 where $k$ and $t$ are parameters,
@@ -304,8 +300,7 @@ we developed a performance model for it in the ping-pong setting,
 for generic $k$ and~$t$. The model is highly accurate on all of the systems
 that we tested including all of the ones used in our experiments.
 \figref{fig:model-valid} shows an example: the predicted results and measured
-results using the ping-pong program in our Noleland cluster with InfiniBand
-(described in Section~\ref{sec:perf}) match well.   
+results using the ping-pong program in our local Noleland cluster with InfiniBand match well.   
 We later used the model to estimate the optimal choice of $k$ and~$t$ that maximizes the 
 ping-pong performance. 
 The model has two sub-components: a model for
@@ -342,8 +337,6 @@ for modeling $\Ted(m, t)$. Specifically,
 where $\aed$ is the initial overhead, and $A + B \cdot (t - 1)$
 models the encryption rate of $t$ threads. 
 
-
-
 For given $k$ and $t$, we now consider modeling the
 $(k, t)$-chopping algorithm in the ping-pong setting of $m$-byte messages. 
 For simplicity, assume that $m$ is a multiple
@@ -351,7 +344,6 @@ of $kt$, and let $s = m / k$ be the size of a $t$-segment stripe.
 %$t$ threads work together to encrypt or decrypt each segment. 
 We assume that the encryption
 and decryption of a message take a similar amount of time, which holds for AES-GCM. 
-
 
 Recall that under the $(k, t)$-chopping algorithm, 
 at the beginning, the sender encrypts the first  $t$-segment stripe with $t$ threads,
@@ -396,6 +388,7 @@ results from the (often publicly available) ping-pong benchmark and the multi-th
 %one does not need to implement CryptMPI
 %to derive the model parameters.
 
+\iffalse
 In the following, we will use our local Noleland cluster with InfiniBand as an
 example to illustrate the process to derive the model parameters. The measured
 unencrypted ping-pong performance for the cluster
@@ -456,12 +449,12 @@ The values of $(\aed, A, B)$ are given in Table~\ref{tab:enc_param};
 they are obtained via Matlab's non-linear least square on the result of the
 encryption throughput benchmark. 
 
+\fi
 
 \iffalse
 As shown in \figref{fig:model-valid}, our model prediction is highly accurate. 
 Below we will describe how to pick the parameters based on the model. 
 \fi
-
 
 
 \heading{Parameter selection.}
@@ -775,25 +768,25 @@ At this point, all process has identical symmetric keys and ready for secure com
 %similar operation.   
 
 
-\subsection{Evaluation of the techniques}
+\subsection{Experiments to evaluate CryptMPI}
 \label{sec:eval}
 
-We empirically evaluate the performance of $\sysrm$ on
-three platforms and compare $\sysrm$ with
+We empirically evaluate the performance of $\sysrm$ and compare $\sysrm$ with
 conventional unencrypted MPI, which will be called \Unencrypted,
 and the naive approach of
 Naser et al.~\cite{Cluster:Naser19}, which will be called {\Naive}.
-The three platforms include the local NoleLand cluster and the XSEDE resources: PSC
+The experiments are performed on XSEDE resources: PSC
 Bridges with Regular Memory partition~\cite{XSEDE}.
-In the following, we will discuss the results from the evaluation on PSC Bridges.
 
 Four set of benchmarks are used in the evaluation: the Ping-pong benchmark for single
 communication performance, the OSU micro-benchmark 5.6.2~\cite{OSUBM} for multi-pair
 performance, the 2D, 3D, 4D stencil kernels, and the NAS parallel
 benchmarks~\cite{Bailey:1991:NPB:2748645.2748648}.
+In the following, we will discuss the results for stencil kernels and the NAS parallel
+benchmarks. 
 
 We run 784-rank Stencil kernels on 112 nodes on PSC Bridges. Note that we leave
-some cores not used by the MPI processes to evaluate multi-threading effectiveness. 
+some cores not used by the MPI processes to evaluate the effectiveness of multi-threading. 
 The results for 2D stencil with different computation loads
 are illustrated in~\figref{fig:2d_stencil}.
 %To see the trends more clearly, we compare the communication time,
@@ -805,17 +798,13 @@ the encryption overhead in CryptMPI is 206\%,
 whereas that of the naive approach is 331\%.
 Even when computational load is heavy---an unfavorable condition for CryptMPI,
 the improvement of CryptMPI over the naive approach is still noticeable.
-For example, under 80\% computational load and 256KB messages, CryptMPI's encryption overhead is 384\
-\%,
-whereas that of the naive approach is 450\%. \textcolor{blue}{ Here $\sysrm$,
+For example, under 80\% computational load and 256KB messages,
+CryptMPI's encryption overhead is 384\%,
+whereas that of the naive approach is 450\%. { Here $\sysrm$,
 dynamically decides $\min\{T_0-T_1, t\} = 2$ threads and 4 pipeline chunks for
-the 2MB messages. The same number of threads and 1 pipeline chunk is used for 256KB message. Note th\
-at the trend in Figure~\ref{fig:2d_stencil} is very similar to that in
-Figure~\ref{fig:2d_stencil_noleland} although the sizes of the job and systems are
-quite different. This indicates that the optimization techniques in CryptMPI
-are effective for this type of application with different job sizes on different
-systems.
-}
+the 2MB messages. The same number of threads and 1 pipeline chunk is used for 256KB message.
+These results indicate that the optimization techniques in CryptMPI
+are effective for this type of applications.}
 
 \begin{figure}[!tbp]
 \centering
@@ -833,33 +822,56 @@ systems.
 
 \heading{NAS benchmarks.}
 
-NAS benchmarks timings on PSC Bridges are shown in Table~\ref{tab:NAS_PSC_INTER_NODE}.
+{
+The timings for NAS benchmarks (CG, LU, SP, BT), Class D,
+on PSC Bridges are shown in Table~\ref{tab:NAS_PSC_INTER_NODE}.
 We ran CG with 512 ranks and 128 nodes because CG can only run with the power of 2 ranks.
-The rest of the programs were run with 784 ranks and 112 nodes. With the increase of ranks
-and nodes total execution time drop sharply and inter-node communication time increases
-than the Noleland InfiniBand results. As a consequence, $\sysrm$ now shows the improvement
-in the total execution time. For instance, the total execution time
+The rest of the programs were run with 784 ranks and 112 nodes. 
+Since $\sysrm$ only optimizes the inter-node communication that requires encryption,
+we compare the total inter-node communication time, total communication time, and total
+application time. CryptMPI's improvement over $Naive$ varies from one benchmark to another.
+For instance, the total execution time
 overhead of CG for the $\sysrm$ is $20.2\%$ and for the $\Naive$ approach is $39.69\%$,
-compared with the unencrypted base. In the case of BT, where the application itself
-overlap computation and communication, both $\sysrm$ and $\Naive$ approach
-has a low total execution time overhead: $4.53\%$ for $\sysrm$ and $5.14\%$ for
-the $\Naive$ approach.
+compared with the unencrypted base. In the case of BT, where the application itself overlap
+computation and communication, both $\sysrm$ and $\Naive$ approach
+has a low total execution time overhead: $4.53\%$ for $\sysrm$ and $5.14\%$ for the $\Naive$
+approach. In the more practical situations like
+the NAS benchmarks, there are factors that can affect the effectiveness
+of $\sysrm$, including the following.
+
+\begin{itemize}
+\item The current CryptMPI only improves the naive approach
+  for messages of at least 64KB, and thus there might be no noticeable
+    difference between the two libraries
+    for applications that have largely small messages.
+
+\item CryptMPI's approach of using multi-thread encryption is only
+  beneficial if there are still some idle computational resources to
+    exploit, which may not hold for some computationally intensive situations.
+
+\item Finally, CryptMPI's pipelining will give a diminishing return if
+  there is already a significant overlapping between computation and
+    communication in the application. Such a situation basically hides
+    the communication overheads; and both $Naive$ and CryptMPI should have
+    a low overhead. This happens in the BT benchmark.
+\end{itemize}
 
 \begin{table*}[!tbp]
 \centering
 \captionsetup{justification=centering, labelsep=newline}
-\caption{\textcolor{blue}{Average Inter-node Communication ($t$\textsubscript{$icom$}), Total Communication ($t$\textsubscript{$tcom$}) and Total Execution ($t$\textsubscript{$exe$})
+\caption{{Average Inter-node Communication ($t$\textsubscript{$icom$}), Total Communication ($t$\textsubscript{$tcom$}) and Total Execution ($t$\textsubscript{$exe$})
 Time (seconds) of NAS Parallel Benchmarks, Class D, 784-rank and 112-node (CG 512-rank and 128-node), on PSC Bridges.}}
-{\color{blue}\begin{tabular}{p{0.1\linewidth}*{12}{p{0.045\linewidth}}}
+\label{tab:NAS_PSC_INTER_NODE}
+{\begin{tabular}{p{0.1\linewidth}*{12}{p{0.045\linewidth}}}
 \toprule[1.25pt]
   & \multicolumn{3}{|c|}{\textbf{CG}} & \multicolumn{3}{c|}{\textbf{LU}} & \multicolumn{3}{c|}{\textbf{SP}} & \multicolumn{3}{c|}{\textbf{BT}}\\
   & $t$\textsubscript{$icom$} & $t$\textsubscript{$tcom$} & $t$\textsubscript{$exe$} & $t$\textsubscript{$icom$} & $t$\textsubscript{$tcom$} & $t$\textsubscript{$exe$} & $t$\textsubscript{$icom$} & $t$\textsubscript{$tcom$} & $t$\textsubscript{$exe$} & $t$\textsubscript{$icom$} & $t$\textsubscript{$tcom$} & $t$\textsubscript{$exe$} \\ \midrule
 
-\textbf{Unencrypted} & 7.77 &  13.17 & 27.09 & 6.30  & 32.11 & 52.17 & 24.67 & 35.94
+\text{\small Unencrypted} & 7.77 &  13.17 & 27.09 & 6.30  & 32.11 & 52.17 & 24.67 & 35.94
                      & 62.40 & 26.49 & 40.54 & 69.89 \\
-\textbf{CryptMPI}  & 8.73 &  14.80 & 32.56 & 8.80  & 34.26 & 56.24 & 30.01 & 39.50 &
+\text{\small CryptMPI}  & 8.73 &  14.80 & 32.56 & 8.80  & 34.26 & 56.24 & 30.01 & 39.50 &
                      67.64 & 28.54 & 42.25 & 73.06 \\
-\textbf{Naive}  & 13.91 &  20.93 & 37.84 & 9.71  & 36.06 & 57.87 & 31.62 & 40.11 &
+\text{\small Naive}  & 13.91 &  20.93 & 37.84 & 9.71  & 36.06 & 57.87 & 31.62 & 40.11 &
                   68.18 & 29.03 & 42.67 & 73.49 \\
 \bottomrule[1.25pt]
 \end{tabular}}                                                      
@@ -867,31 +879,46 @@ Time (seconds) of NAS Parallel Benchmarks, Class D, 784-rank and 112-node (CG 51
 
 \section{Resource Usage Plan to achieve the research objectives}
 
-We already have a baseline implementation of CryptMPI. We are current developing
-and implementing new optimization techniques for point-to-point and collective
-communication. Each time a new technique is introduced, evaluation needs to be
-performance to ensure that the technique can perform well in practice. 
+We have a complete implementation of the baseline CryptMPI. The system is currently under heavy
+development. Techniques that are being developed or will be considered include the following: 
+techniques to optimize point-to-pint communication with small messages,
+counter-mode encryption (for both large and small messages)
+that represents another trade-off point between performance
+and secure features, techniques to explore GPU capability for efficient
+secure MPI communication, novel collective algorithms for collective operations with
+encryption (both GCM and counter-mode). Each time a new technique is introduced,
+extensive experimentation and evaluation will need to be performed to ensure that the
+technique will perform well in practice. 
 
 The XSEDE resources requested will be used in the benchmarking and evaluation
-of CryptMPI. To thoroughly evaluate CryptMPI, we plan to use different types of MPI
-benchmarks and programs. In addition to the ones described in Section~\ref{sec:eval}
-(pingpong, OSU benchmark, 2D, 3D, 4D Stencil kernels, NAS parallel benchmarks), we also
-plan to evaluate with other benchmarks such as the Coral benchmark \cite{CORAL}.
+of CryptMPI as shown in Section~\ref{sec:eval}. To thoroughly evaluate CryptMPI,
+we plan to use different types of MPI benchmarks and programs. In addition to the ones
+described in Section~\ref{sec:eval} (pingpong, OSU benchmark, 2D, 3D, 4D Stencil kernels,
+NAS parallel benchmarks), we also plan to evaluate with other benchmarks and mini-apps
+such as the Coral benchmark \cite{CORAL}, as well as some real-world MPI applications. 
 
-The XSEDE resources will mainly be used for medium and large size evaluation
-and validation. Small size evaluation will be performed using the local cluster.
-The medium size evaluation will have no more than 1000 MPI ranks while the large
-size evaluation have have a few thousand MPI ranks.
+In addition to using different benchmarks, the nature of the research requires us to
+run benchmarks with different system configurations such as different numbers of ranks per node
+and different numbers of total ranks to investigate the performance of CryptMPI under
+different settings. Some cores in each node may be intentionally left unused by the MPI
+application. To thoroughly evaluate the CryptMPI, we will carry out
+a very large number of runs with different benchmarks, different system configurations,
+and different job sizes.
 
 Besides the project ending evaluation when a thorough evaluation invovling all aspects
-of evaluation will be performed. Other evaluation will be performed as needed.
+of evaluation will be performed. Other evaluation and validation will be performed as needed.
 For example, when a promising new technique for point-to-point communication
 is introduced, a set of point-to-point communication benchmarks will be used to evaluate
 the technique. When a new collective algorithm is introduced, benchmarks for the
 collective will be used.
 
-We also plan to Stempede and Bridges as our main evaluation platform. Additional,
-techniques that utilize GPU for efficient communication will also be developed
+The XSEDE resources will mainly be used for medium (200-1000 cores)
+and large (1000+ cores) size evaluation and validation. Small size evaluation
+will be performed using our local cluster. 
+
+We plan to Stempede2 and Bridges as our main evaluation platforms. Testing our system on
+different platforms is necessary to ensure our techniques work across different platforms. 
+Additional, techniques that utilize GPU for efficient secure communication will be developed
 and evaluated. As such, we also request GPU clusters to evaluate such techniques. 
 
 Since our research focuses on communication (and computation), we do not have any special
@@ -899,16 +926,38 @@ needs for storage.
 
 \section{Justification of the allocation}
 
-We have used a 50,000 SUs start-up allocation in our preliminary, which allows us
-to complete a medium size evaluation of our preliminary implementation with the
-NAS parallel benchmarks. 
+Since our software is an MPI library, its performance does not decide the resource requirement:
+the application and benchmark programs used in the evaluation, as well as how they are executed,
+will determine the resource needs. Thoroughly evaluating the performance of a
+communication library like CryptMPI will require various micro-benchmarks, communication
+kernels, mini-apps, and application benchmarks. Additionally, the benchmarks must run with
+different system configurations to evaluate the performance of the library in different conditions.
+All of these make the estimation of the required resources challenging.
 
+We have used a 50,000 SUs start-up allocation in our preliminary study. This allocation allows for a 
+a medium-size (768 cores) evaluation using NAS parallel benchmarks (Class D) and
+the stencil kernels. The 50,000 SUs allocation have been exhausted in the evaluation. We estimate the
+resource required based on the experience with the start-up allocation. 
+
+In the next year, we expect to have 5 major milestones in the CryptMPI development
+that will require similar level evaluation: GCM point-to-point communication with small messages,
+counter-mode point-to-point communication with large messages, counter-mode point-to-point
+communication with small messages, preliminary secure collective algorithms, complete secure
+collective algorithms. As mentioned earlier, besides the milestones, experimentations will also
+be needed for validation and performance tuning. Additionally, we plan to perform a thorough
+evaluation of CryptMPI when the project wraps up, which will involve larger runs.
+The evaluation will be performed on two platforms: Bridges and Stempede2. Based on the estimation, 
+we are requesting 500,000 SUs on Bridges and Stempede2. We will also explore GPU enabled schemes for
+efficient secure MPI communication, which we do not have experience yet. We request 5000 SUs to
+explore the techniques. 
 
 \section{Access to other CI resources}
 
-The PI has access to a 32-node local cluster called NoleLand. The nodes in this cluster
-are of different types; and we only have 8 nodes of the same type in the cluster
+The PI has access to a 32-node local cluster called NoleLand. The cluster is still
+in the deployment phase. Since this cluster supports different types of research, the nodes 
+in the cluster are of different types. We normally have 8 nodes of the same type in the cluster
 that are suitable for running homogeneous MPI jobs. Thus, NoleLand is used
-for software development and initial testing. This research relies on XSEDE
-resources for large scale testing and performance evaluation. 
+for software development and initial testing. The PI also has access to a small 8-node
+server cluster for data processing. This research relies on XSEDE resources for large
+scale testing and performance evaluation. 
 
