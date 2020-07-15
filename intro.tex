@@ -47,7 +47,7 @@ secure MPI communication, it is thus critical to develop novel schemes to optimi
 the MPI performance with encryption. 
 
 In this research, we will develop CryptMPI, a high-performance secure MPI library.
-CryptMPI uses AES GCM as well as the less expensive counter mode encryption technique
+CryptMPI uses AES GCM as well as the less expensive counter mode encryption scheme
 to support MPI communication with integrity and privacy.
 CryptMPI will be built over MPICH (MPICH-3.2.1) and MVAPICH2 (MVAPICH2-2.3.2)
 by incorporating the state-of-the-art encryption library BoringSSL and is intended
@@ -60,35 +60,36 @@ encryption into the MPI library \cite{Cluster:Naser19}, and developing more
 advanced techniques such as pipelining and multithreading for secure
 point-to-point communication and new collective algorithms for collective operations
 with encryption. Like the development of other software libraries, implementation and
-experimentation are essential for the new secure MPI library to be
-practical and efficient. Xsede resources are critical in the performance
+experimentation are essential for our library to be
+practical and efficient. XSEDE resources are critical in the performance
 evaluation and tuning of CryptMPI and for ensuring that CryptMPI achieves high performance
 in practice. Our ongoing work on this subject is supported by the NSF grant
 CICI-1738912 and CRI-1822737. The evaluation of our preliminary library has been carried
-out on the XSEDE Bridges resource at Pittsburgh Supercomputing Center through a
+out on the XSEDE resource, Bridges at Pittsburgh Supercomputing Center, through a
 startup allocation TG-ECS190004. 
 
 \section{Research Objectives}
 
 The main objective of this research is to develop a high-performance secure MPI
 library for different interconnect technologies including Ethernet, InfiniBand, and
-Omnipath. Since the encryption/decryption operations are very expensive operations,
+Omnipath. Since the encryption/decryption operations are expensive operations,
 incorporating security mechanisms in the MPI library can introduce significant
-overheads. To achieve our objective, we must investigate and experiment with various
+overheads. To achieve our objective, we will investigate and experiment with various
 enabling technology, develop, implement, and evaluate novel techniques for efficient
-point-to-point and collective communication schemes. In particular, to study the
-scalability of a new scheme and to ensure new techniques are efficient in practice,
-large-scale benchmarking runs must be conducted. In the following, we will describe
-some of our preliminary finding. 
+point-to-point and collective communication schemes (with encryption). Large-scale
+benchmarking runs with different system configurations and different benchmarks
+are essential in this research. CryptMPI is currently under development with new
+techniques being added to the system. In the following, we will describe
+the current techniques in CryptMPI for optimizing point-to-point communication with
+large message sizes and illustrate how the XSEDE resources are used in the
+research. 
 
-\subsection{Techniques for large point-to-point communications}
+\subsection{Optimizating secure point-to-point communication with large messages}
 
-Our starting point is the vanilla implementation of secure MPI
-library~\cite{Cluster:Naser19}. We have developed various techniques to
-optimize point-to-point communication of large messages (meaning 64KB and beyond).
-%The following MPI routines are modified: $\Send$, $\Recv$, $\ISend$, $\IRecv$, $\Wait$, and \\ $\Waitall$.
-
-To achieve high performance, CryptMPI incorporates two optimization
+Our starting point is a vanilla implementation of secure MPI
+library~\cite{Cluster:Naser19}. To achieve high performance for secure
+point-to-point communication of large messages (64KB or larger),
+CryptMPI incorporates two optimization
 pipelining and multi-threading. Integrating those with encryption without
 compromising security is challenging. We resolved that by using theory from
 streaming encryption~\cite{C:HRRV15} and Google's Tink library~\cite{tink}.
