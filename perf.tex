@@ -1,20 +1,22 @@
 \centerline{\Large\bfseries Code Performance \& Resource Costs}
 
-Since our software is an MPI library, its performance does not decide the resource requirement.
-Instead, the application and benchmark programs used in the evaluation will decide the resource
-needs. Moreover, the nature of the research requires us to run different benchmarks and in different
-system configurations such as different numbers of ranks per node and different numbers of total
-ranks. Additional, we sometimes needs to leave some cores in each node unuse (by the MPI) to
-properly evaluate the performance. All of these making the estimation of the required
-resources challenging.
+Since our software is an MPI library, its performance does not decide the resource requirement:
+the application and benchmark programs used in the evaluation, as well as how they are executed,
+will determine the resource needs. Evaluating the performance of a communication library like
+CryptMPI will require various micro-benchmarks, such as ping-pong and the OSU benchmarks \cite{OSUBM},
+communication kernels, and application benchmarks and mini-apps such as the NAS parallel benchmarks
+\cite{Bailey:1991:NPB:2748645.2748648} and the Coral benchmarks \cite{CORAL}. 
+
+In addition to using different benchmarks, the nature of the research also requires us to
+run benchmarks with different system configurations such as different numbers of ranks per node
+and different numbers of total ranks. Some cores in each node are sometimes intentionally left
+unused by the MPI application. All of these make the estimation of the required resources
+challenging.
 
 The XSEDE resources will mainly be used in medium (500-1000 cores) and large
 (1000+ cores) runs. We have used a startup allocation of 50,000 SUs (TG-ECS190004) to perform
 preliminary evaluation of CryptMPI using micro-benchmarks, and
-NAS parallel benchmarks (Class D on 784-ranks on 112-nodes). In this project period, we plan to
-run NAS parallel benchmarks, Class E on a larger number of nodes as well as MPI applications
-and benchmarks such as CORAL benchmark codes would take more computing hours. 
-
+NAS parallel benchmarks (Class D on 784-ranks on 112-nodes). 
 In the following, we will report performance results with ping-pong, OSU benchmarks, stencil
 benchmarks, and NAS parallel benchmarks that we obtained on
 PSC Bridges (regular memory). The results compare the performance of
@@ -23,7 +25,8 @@ MPI ($Unencrypted$), a naive implementation ($Naive$), and $CryptMPI$.
 
 \noskipheading{Ping Pong.}
 The ping-pong results on Bridges are shown in \figref{fig:xsede_pingpong}. Because of
-the low of computation power, the naive approach has very high overhead on Bridges.
+the relatively low of computation power in each core,
+the naive approach has a very high overhead on Bridges.
 For instance, with 4MB message size,
 the $naive$ approach's overhead is 754.87\% compared to the $unencrypted$
 base. On the other hand, by using pipelining and multi-threading, CryptMPI performs
@@ -45,7 +48,7 @@ All three libraries have similar
 performance when there are a sufficient number of pairs of communication.
 However, when the message size is small and there are only a small number
 of concurrent flows, the relative speed between encryption and communication
-has a larger impact. When the number of concurrent pairs is small,
+has a large impact. When the number of concurrent pairs is small,
 even for large messages, $\Naive$ has very high overheads. For instance in
 two pairs for 4MB messages the overhead for $\Naive$  is 178.48\% and
 for CryptMPI is 5.03\%: $\sysrm$ again consistently performs
@@ -107,8 +110,8 @@ are effective for this type of applications.
 \heading{NAS benchmarks.} %Our large runs for NAS benchmarks on PSC Bridges have not completed as the time of this writing,
 %and thus we are unable to report them at this time. 
 {
-NAS benchmarks (CG, LU, SP, BT)
-timings on PSC Bridges are shown in Table~\ref{tab:NAS_PSC_INTER_NODE}.
+The timings for NAS benchmarks (CG, LU, SP, BT), Class D,
+on PSC Bridges are shown in Table~\ref{tab:NAS_PSC_INTER_NODE}.
 We ran CG with 512 ranks and 128 nodes because CG can only run with the power of 2 ranks.
 The rest of the programs were run with 784 ranks and 112 nodes. 
 Since $\sysrm$ only optimizes the inter-node communication that requires encryption,
