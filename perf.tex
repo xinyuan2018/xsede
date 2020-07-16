@@ -1,20 +1,22 @@
 \centerline{\Large\bfseries Code Performance \& Resource Costs}
 
-Since our software is an MPI library, its performance does not decide the resource requirement:
-the application and benchmark programs used in the evaluation, as well as how they are executed,
-will determine the resource needs. Evaluating the performance of a communication library like
-CryptMPI will require various micro-benchmarks, such as ping-pong and the OSU benchmarks \cite{OSUBM},
-communication kernels, and application benchmarks and mini-apps such as the NAS parallel benchmarks
-\cite{Bailey:1991:NPB:2748645.2748648} and the Coral benchmarks \cite{CORAL}. 
+%Since our software is an MPI library, its performance does not decide the resource requirement:
+%the application and benchmark programs used in the evaluation, as well as how they are executed,
+%will determine the resource needs. Evaluating the performance of a communication library like
+%CryptMPI will require various micro-benchmarks, such as the ping-pong benchmark and
+%the OSU benchmarks \cite{OSUBM},
+%communication kernels, and application benchmarks and mini-apps such as the NAS parallel benchmarks
+%\cite{Bailey:1991:NPB:2748645.2748648} and the Coral benchmarks \cite{CORAL}. 
+%
+%In addition to using different benchmarks, the nature of the research also requires us to
+%run benchmarks with different system configurations such as different numbers of ranks per node
+%and different numbers of total ranks. Some cores in each node are sometimes intentionally left
+%unused by the MPI application. All of these make the estimation of the required resources
+%challenging.
 
-In addition to using different benchmarks, the nature of the research also requires us to
-run benchmarks with different system configurations such as different numbers of ranks per node
-and different numbers of total ranks. Some cores in each node are sometimes intentionally left
-unused by the MPI application. All of these make the estimation of the required resources
-challenging.
-
-The XSEDE resources will mainly be used in medium (200-1000 cores) and large
-(1000+ cores) runs. We have used a startup allocation of 50,000 SUs (TG-ECS190004) to perform
+%The XSEDE resources will mainly be used in medium (200-1000 cores) and large
+%(1000+ cores) runs.
+We have used a startup allocation of 50,000 SUs (TG-ECS190004) to perform
 preliminary evaluation of CryptMPI using micro-benchmarks and
 NAS parallel benchmarks (Class D on 784-ranks, 112-nodes). 
 In the following, we will report performance results with ping-pong, OSU benchmarks, stencil
@@ -54,6 +56,24 @@ two pairs for 4MB messages the overhead for $\Naive$  is 178.48\% and
 for CryptMPI is 5.03\%: $\sysrm$ again consistently performs
 better than $\Naive$ due to the optimization techniques incorporated.
 
+\begin{figure}[hbp]
+\centering
+	\subfloat[$64$KB-messages]{
+	  \includegraphics[width=0.4\textwidth]{graphs/infini-multi-pair-xsede-64KB.eps}%
+	}
+\subfloat[$4$MB-messages]{
+	  \includegraphics[width=0.4\textwidth]{graphs/infini-multi-pair-xsede-4MB.eps}%
+	}
+	\captionsetup{singlelinecheck=false}
+	\caption{OSU Multiple-Pair throughput on PSC Bridges. }
+	\label{fig:xsede_multipair_infiniband}
+	\vspace{-1.5ex}
+	%\end{figure}
+	\end{figure}
+
+
+
+
 
 \heading{Stencil Kernels.}
 We run 784-rank Stencil kernels on 112 nodes. 
@@ -73,22 +93,6 @@ encryption overhead is 384\%,
 whereas that of the naive approach is 450\%.
 This indicates that the optimization techniques in CryptMPI
 are effective for this type of applications. 
-
-
-\begin{figure}[hbp]
-\centering
-	\subfloat[$64$KB-messages]{
-	  \includegraphics[width=0.4\textwidth]{graphs/infini-multi-pair-xsede-64KB.eps}%
-	}
-\subfloat[$4$MB-messages]{
-	  \includegraphics[width=0.4\textwidth]{graphs/infini-multi-pair-xsede-4MB.eps}%
-	}
-	\captionsetup{singlelinecheck=false}
-	\caption{OSU Multiple-Pair throughput on PSC Bridges. }
-	\label{fig:xsede_multipair_infiniband}
-	\vspace{-1.5ex}
-	%\end{figure}
-	\end{figure}
 
 
 \begin{figure}[htbp]	
